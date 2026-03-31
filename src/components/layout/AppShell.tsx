@@ -59,10 +59,9 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
             to={item.to}
             onClick={onClose}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                isActive
-                  ? 'bg-brand-500/15 text-brand-400 border border-brand-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-surface-800'
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${isActive
+                ? 'bg-brand-500/15 text-brand-400 border border-brand-500/20'
+                : 'text-slate-400 hover:text-white hover:bg-surface-800'
               }`
             }
           >

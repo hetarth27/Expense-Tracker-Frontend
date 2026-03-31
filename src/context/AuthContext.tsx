@@ -1,13 +1,13 @@
-import React, {
+import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
   ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
-import { User, AuthState } from '../types';
 import { authApi } from '../api/services';
+import { AuthState, User } from '../types';
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;

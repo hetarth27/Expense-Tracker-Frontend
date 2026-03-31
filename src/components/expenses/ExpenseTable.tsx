@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Expense, CATEGORY_META } from '../../types';
+import { useState } from 'react';
+import { CATEGORY_META, Expense } from '../../types';
 import { formatCurrency, formatDate } from '../../utils/helpers';
-import { ConfirmDialog, EmptyState, Badge } from '../ui';
+import { Badge, ConfirmDialog, EmptyState } from '../ui';
 import Button from '../ui/Button';
 
 interface ExpenseTableProps {

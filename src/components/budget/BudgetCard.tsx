@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Budget, BudgetFormData, EXPENSE_CATEGORIES, CATEGORY_META } from '../../types';
-import { formatCurrency, clamp } from '../../utils/helpers';
-import { Select } from '../ui/Input';
-import { Input } from '../ui/Input';
+import { Budget, BudgetFormData, CATEGORY_META, EXPENSE_CATEGORIES } from '../../types';
+import { MONTH_OPTIONS, clamp, formatCurrency, getYearOptions } from '../../utils/helpers';
+import { ConfirmDialog, ErrorAlert } from '../ui';
 import Button from '../ui/Button';
-import { ErrorAlert, ConfirmDialog } from '../ui';
-import { MONTH_OPTIONS, getYearOptions } from '../../utils/helpers';
+import { Input, Select } from '../ui/Input';
 
 // ─── Budget Card ──────────────────────────────────────────
 interface BudgetCardProps {
@@ -23,8 +21,8 @@ export const BudgetCard = ({ budget, onDelete }: BudgetCardProps) => {
   const progressColor = exceeded
     ? 'bg-rose-500'
     : percentage >= 80
-    ? 'bg-amber-400'
-    : 'bg-brand-400';
+      ? 'bg-amber-400'
+      : 'bg-brand-400';
 
   const handleDelete = async () => {
     setIsDeleting(true);

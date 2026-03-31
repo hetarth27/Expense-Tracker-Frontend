@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDashboard } from '../hooks/useDashboard';
-import { getCurrentMonthYear, formatCurrency, formatPercentage, formatMonthYear } from '../utils/helpers';
-import { StatCard, PageLoader, ErrorAlert } from '../components/ui';
-import FilterBar from '../components/dashboard/FilterBar';
 import CategoryBreakdown from '../components/dashboard/CategoryBreakdown';
+import FilterBar from '../components/dashboard/FilterBar';
 import MonthlyTrend from '../components/dashboard/MonthlyTrend';
 import RecentExpenses from '../components/dashboard/RecentExpenses';
-import { ExpenseFilters, CATEGORY_META } from '../types';
+import { ErrorAlert, PageLoader, StatCard } from '../components/ui';
+import { useDashboard } from '../hooks/useDashboard';
+import { CATEGORY_META, ExpenseFilters } from '../types';
+import { formatCurrency, formatMonthYear, formatPercentage, getCurrentMonthYear } from '../utils/helpers';
 
 const DashboardPage = () => {
   const now = getCurrentMonthYear();
@@ -81,8 +81,8 @@ const DashboardPage = () => {
                 pctChange > 0
                   ? 'bg-rose-500/10'
                   : pctChange < 0
-                  ? 'bg-emerald-500/10'
-                  : 'bg-surface-700'
+                    ? 'bg-emerald-500/10'
+                    : 'bg-surface-700'
               }
             />
             <StatCard

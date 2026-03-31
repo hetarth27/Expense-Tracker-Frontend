@@ -1,10 +1,10 @@
-import React, {
+import {
   createContext,
-  useContext,
-  useState,
-  useCallback,
   ReactNode,
+  useCallback,
+  useContext,
   useEffect,
+  useState,
 } from 'react';
 
 // ─── Types ────────────────────────────────────────────────
@@ -74,9 +74,9 @@ export const useToast = () => {
 // ─── Toast Item ───────────────────────────────────────────
 const toastStyles: Record<ToastType, { bar: string; icon: string; label: string }> = {
   success: { bar: 'bg-emerald-400', icon: '✓', label: 'text-emerald-400' },
-  error:   { bar: 'bg-rose-400',    icon: '✕', label: 'text-rose-400' },
-  warning: { bar: 'bg-amber-400',   icon: '!', label: 'text-amber-400' },
-  info:    { bar: 'bg-brand-400',   icon: 'i', label: 'text-brand-400' },
+  error: { bar: 'bg-rose-400', icon: '✕', label: 'text-rose-400' },
+  warning: { bar: 'bg-amber-400', icon: '!', label: 'text-amber-400' },
+  info: { bar: 'bg-brand-400', icon: 'i', label: 'text-brand-400' },
 };
 
 const ToastItem = ({

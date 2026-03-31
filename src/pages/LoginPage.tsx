@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Input } from '../components/ui/Input';
-import Button from '../components/ui/Button';
 import { ErrorAlert } from '../components/ui';
+import Button from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const { login } = useAuth();

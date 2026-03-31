@@ -1,13 +1,11 @@
-import React from 'react';
 import {
-  PieChart,
-  Pie,
   Cell,
-  Tooltip,
+  Pie,
+  PieChart,
   ResponsiveContainer,
-  Legend,
+  Tooltip
 } from 'recharts';
-import { CategoryTotal, CATEGORY_META, CHART_COLORS } from '../../types';
+import { CATEGORY_META, CategoryTotal, CHART_COLORS } from '../../types';
 import { formatCurrency } from '../../utils/helpers';
 import { EmptyState } from '../ui';
 

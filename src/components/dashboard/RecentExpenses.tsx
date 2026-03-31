@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Expense, CATEGORY_META } from '../../types';
+import { CATEGORY_META, Expense } from '../../types';
 import { formatCurrency, formatDateShort } from '../../utils/helpers';
 import { EmptyState } from '../ui';
 

@@ -1,15 +1,14 @@
-import React from 'react';
 import {
-  AreaChart,
   Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from 'recharts';
 import { MonthlyTotal } from '../../types';
-import { getMonthName, formatCompactCurrency, formatCurrency } from '../../utils/helpers';
+import { formatCompactCurrency, formatCurrency, getMonthName } from '../../utils/helpers';
 import { EmptyState } from '../ui';
 
 interface MonthlyTrendProps {
