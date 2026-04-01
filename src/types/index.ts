@@ -136,13 +136,14 @@ export const CATEGORY_META: Record<string, CategoryMeta> = {
   'Transportation': { color: 'text-blue-400', bg: 'bg-blue-400/10', icon: '🚗' },
   'Shopping': { color: 'text-pink-400', bg: 'bg-pink-400/10', icon: '🛍️' },
   'Entertainment': { color: 'text-purple-400', bg: 'bg-purple-400/10', icon: '🎮' },
-  'Healthcare': { color: 'text-emerald-400', bg: 'bg-emerald-400/10', icon: '🏥' },
+  'Medicines': { color: 'text-emerald-400', bg: 'bg-emerald-400/10', icon: '🏥' },
   'Utilities': { color: 'text-yellow-400', bg: 'bg-yellow-400/10', icon: '⚡' },
   'Housing': { color: 'text-cyan-400', bg: 'bg-cyan-400/10', icon: '🏠' },
   'Education': { color: 'text-indigo-400', bg: 'bg-indigo-400/10', icon: '📚' },
   'Travel': { color: 'text-sky-400', bg: 'bg-sky-400/10', icon: '✈️' },
   'Groceries': { color: 'text-lime-400', bg: 'bg-lime-400/10', icon: '🛒' },
   'Subscriptions': { color: 'text-violet-400', bg: 'bg-violet-400/10', icon: '📱' },
+  'Fruits & Vegetables': { color: 'text-red-400', bg: 'bg-red-400/10', icon: '🍇' },
   'Other': { color: 'text-slate-400', bg: 'bg-slate-400/10', icon: '📌' },
 };
 
