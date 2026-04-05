@@ -17,22 +17,22 @@ const FilterBar = ({ filters, onChange }: FilterBarProps) => {
   const yearOptions = getYearOptions().map((y) => ({ value: y, label: String(y) }));
 
   return (
-    <div className="flex flex-wrap gap-3">
-      <div className="w-36">
+    <div className="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2 lg:w-auto">
+      <div className="w-full sm:w-36">
         <Select
           value={filters.month}
           options={MONTH_OPTIONS}
           onChange={(e) => onChange({ ...filters, month: parseInt(e.target.value) })}
         />
       </div>
-      <div className="w-28">
+      <div className="w-full sm:w-28">
         <Select
           value={filters.year}
           options={yearOptions}
           onChange={(e) => onChange({ ...filters, year: parseInt(e.target.value) })}
         />
       </div>
-      <div className="w-36">
+      <div className="w-full sm:w-36">
         <Select
           value={filters.type}
           options={TYPE_OPTIONS}

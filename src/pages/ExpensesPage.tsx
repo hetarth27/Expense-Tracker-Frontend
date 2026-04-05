@@ -70,38 +70,39 @@ const ExpensesPage = () => {
   ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="page-title">Expenses</h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            {total} expense{total !== 1 ? 's' : ''} ·{' '}
-            {formatMonthYear(filters.month, filters.year)}
+          <p className="mt-0.5 text-sm text-slate-500">
+            {total} expense{total !== 1 ? 's' : ''} · {formatMonthYear(filters.month, filters.year)}
           </p>
         </div>
-        <Button onClick={() => setShowAddModal(true)}>+ Add Expense</Button>
+
+        <Button onClick={() => setShowAddModal(true)} className="w-full sm:w-auto">
+          + Add Expense
+        </Button>
       </div>
 
       {error && <ErrorAlert message={error} />}
 
-      {/* Filters */}
-      <div className="card p-4 flex flex-wrap gap-3 items-center">
-        <FilterBar filters={filters} onChange={handleFilterChange} />
-        <div className="w-44">
-          <Select
-            value={categoryFilter}
-            options={categoryOptions}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value);
-              setPage(1);
-            }}
-          />
+      <div className="card p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-center lg:gap-2">
+          <FilterBar filters={filters} onChange={handleFilterChange} />
+          <div className="w-full sm:w-44 lg:w-44">
+            <Select
+              value={categoryFilter}
+              options={categoryOptions}
+              onChange={(e) => {
+                setCategoryFilter(e.target.value);
+                setPage(1);
+              }}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="card p-6">
+      <div className="card p-4 sm:p-6">
         {isLoading ? (
           <PageLoader />
         ) : (
@@ -112,18 +113,18 @@ const ExpensesPage = () => {
           />
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-surface-700/50">
+          <div className="mt-6 flex flex-col gap-3 border-t border-surface-700/50 pt-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-slate-500">
               Page {page} of {totalPages} · {total} results
             </p>
-            <div className="flex gap-2">
+            <div className="flex w-full gap-2 sm:w-auto">
               <Button
                 variant="secondary"
                 size="sm"
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
+                className="flex-1 sm:flex-none"
               >
                 ← Prev
               </Button>
@@ -132,6 +133,7 @@ const ExpensesPage = () => {
                 size="sm"
                 onClick={() => setPage((p) => p + 1)}
                 disabled={page === totalPages}
+                className="flex-1 sm:flex-none"
               >
                 Next →
               </Button>
@@ -140,12 +142,10 @@ const ExpensesPage = () => {
         )}
       </div>
 
-      {/* Add Modal */}
       <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Add Expense">
         <ExpenseForm onSubmit={handleAdd} onCancel={() => setShowAddModal(false)} />
       </Modal>
 
-      {/* Edit Modal */}
       <Modal
         isOpen={!!editExpense}
         onClose={() => setEditExpense(null)}
