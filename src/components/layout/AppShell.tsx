@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const NAV_ITEMS = [
   {
@@ -34,6 +35,7 @@ const NAV_ITEMS = [
 
 export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -73,6 +75,28 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
       {/* User section */}
       <div className="mt-auto pt-4 border-t border-surface-700/50">
+        <button
+          onClick={toggleTheme}
+          className="w-full mb-3 flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-400 hover:text-slate-100 hover:bg-surface-800 transition-all duration-150"
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          <span className="flex items-center gap-3">
+            {theme === 'dark' ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v2.25m0 13.5V21m9-9h-2.25M5.25 12H3m15.114 6.364l-1.591-1.591M7.477 7.477 5.886 5.886m12.228 0l-1.591 1.591M7.477 16.523l-1.591 1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0Z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12.79A9 9 0 1111.21 3a7.5 7.5 0 009.79 9.79Z" />
+              </svg>
+            )}
+            <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+          </span>
+          <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+            {theme}
+          </span>
+        </button>
+
         <div className="flex items-center gap-3 px-3 py-2 mb-1">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
             {user?.name.charAt(0).toUpperCase()}
@@ -98,6 +122,7 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -131,7 +156,22 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="font-display text-lg font-bold text-white">Spendly</span>
+          <span className="font-display text-lg font-bold text-white flex-1">Spendly</span>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-xl hover:bg-surface-800 text-slate-400"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 3v2.25m0 13.5V21m9-9h-2.25M5.25 12H3m15.114 6.364l-1.591-1.591M7.477 7.477 5.886 5.886m12.228 0l-1.591 1.591M7.477 16.523l-1.591 1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0Z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M21 12.79A9 9 0 1111.21 3a7.5 7.5 0 009.79 9.79Z" />
+              </svg>
+            )}
+          </button>
         </header>
 
         <main className="flex-1 overflow-y-auto scrollbar-thin p-4 lg:p-8">

@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import PublicRoute from './components/layout/PublicRoute';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import BudgetsPage from './pages/BudgetsPage';
 import DashboardPage from './pages/DashboardPage';
@@ -13,28 +14,30 @@ import RegisterPage from './pages/RegisterPage';
 const App = () => {
   return (
     <BrowserRouter>
-      <ToastProvider>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <ThemeProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-            {/* Public-only (redirect to dashboard if logged in) */}
-            <Route element={<PublicRoute />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-            </Route>
+              {/* Public-only (redirect to dashboard if logged in) */}
+              <Route element={<PublicRoute />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+              </Route>
 
-            {/* Protected (redirect to login if not authenticated) */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/expenses" element={<ExpensesPage />} />
-              <Route path="/budgets" element={<BudgetsPage />} />
-            </Route>
+              {/* Protected (redirect to login if not authenticated) */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/expenses" element={<ExpensesPage />} />
+                <Route path="/budgets" element={<BudgetsPage />} />
+              </Route>
 
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </AuthProvider>
-      </ToastProvider>
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </AuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

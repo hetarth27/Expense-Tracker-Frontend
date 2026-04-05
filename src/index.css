@@ -5,18 +5,49 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --app-bg: #020617;
+    --app-text: #f1f5f9;
+    --app-border: transparent;
+    --app-card: rgba(15, 23, 42, 0.8);
+    --app-card-hover: rgba(30, 41, 59, 0.8);
+    --app-muted: #94a3b8;
+    --app-muted-strong: #cbd5e1;
+    --app-muted-soft: #64748b;
+    --app-shadow: rgba(0, 0, 0, 0.2);
+    --app-gradient-top: rgba(14, 165, 233, 0.08);
+    --app-gradient-bottom: rgba(99, 102, 241, 0.05);
+    --app-scrollbar: #334155;
+  }
+
+  .theme-light {
+    color-scheme: light;
+    --app-bg: #efefef;
+    --app-text: #0f172a;
+    --app-border: transparent;
+    --app-card: rgba(255, 255, 255, 0.88);
+    --app-card-hover: rgba(248, 250, 252, 0.98);
+    --app-muted: #475569;
+    --app-muted-strong: #1e293b;
+    --app-muted-soft: #64748b;
+    --app-shadow: rgba(148, 163, 184, 0.22);
+    --app-gradient-top: rgba(14, 165, 233, 0.12);
+    --app-gradient-bottom: rgba(99, 102, 241, 0.08);
+    --app-scrollbar: #94a3b8;
   }
 
   * {
-    @apply border-surface-700;
+    border-color: var(--app-border);
   }
 
   body {
-    @apply bg-surface-950 text-slate-100 font-sans antialiased;
+    @apply font-sans antialiased;
+    background-color: var(--app-bg);
+    color: var(--app-text);
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14, 165, 233, 0.08), transparent),
-      radial-gradient(ellipse 50% 40% at 90% 80%, rgba(99, 102, 241, 0.05), transparent);
+      radial-gradient(ellipse 80% 50% at 50% -20%, var(--app-gradient-top), transparent),
+      radial-gradient(ellipse 50% 40% at 90% 80%, var(--app-gradient-bottom), transparent);
     background-attachment: fixed;
+    transition: background-color 150ms ease, color 150ms ease;
   }
 
   html {
@@ -26,11 +57,20 @@
 
 @layer components {
   .card {
-    @apply bg-surface-900/80 backdrop-blur-sm border border-surface-700/50 rounded-2xl;
+    @apply backdrop-blur-sm border rounded-2xl;
+    background-color: var(--app-card);
+    border-color: var(--app-border);
+    box-shadow: 0 18px 40px -24px var(--app-shadow);
   }
 
   .card-hover {
-    @apply card transition-all duration-200 hover:border-surface-600 hover:bg-surface-800/80 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20;
+    @apply card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  .card-hover:hover {
+    background-color: var(--app-card-hover);
+    border-color: var(--app-border);
+    box-shadow: 0 24px 50px -28px var(--app-shadow);
   }
 
   .btn-primary {
@@ -38,7 +78,10 @@
   }
 
   .btn-secondary {
-    @apply bg-surface-800 hover:bg-surface-700 text-slate-200 font-medium px-5 py-2.5 rounded-xl border border-surface-600 transition-all duration-150 active:scale-95;
+    @apply font-medium px-5 py-2.5 rounded-xl border transition-all duration-150 active:scale-95;
+    background-color: var(--app-card-hover);
+    color: var(--app-muted-strong);
+    border-color: var(--app-border);
   }
 
   .btn-danger {
@@ -46,11 +89,15 @@
   }
 
   .input {
-    @apply w-full bg-surface-800/60 border border-surface-600 rounded-xl px-4 py-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all duration-150;
+    @apply w-full border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all duration-150;
+    background-color: var(--app-card);
+    color: var(--app-text);
+    border-color: var(--app-border);
   }
 
   .label {
-    @apply block text-sm font-medium text-slate-400 mb-1.5;
+    @apply block text-sm font-medium mb-1.5;
+    color: var(--app-muted);
   }
 
   .stat-card {
@@ -62,18 +109,20 @@
   }
 
   .page-title {
-    @apply font-display text-2xl font-bold text-white tracking-tight;
+    @apply font-display text-2xl font-bold tracking-tight;
+    color: var(--app-text);
   }
 
   .section-title {
-    @apply text-sm font-semibold text-slate-400 uppercase tracking-wider;
+    @apply text-sm font-semibold uppercase tracking-wider;
+    color: var(--app-muted);
   }
 }
 
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #334155 transparent;
+    scrollbar-color: var(--app-scrollbar) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -85,11 +134,45 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #334155;
+    background-color: var(--app-scrollbar);
     border-radius: 2px;
   }
 
   .text-gradient {
     @apply bg-gradient-to-r from-brand-400 to-indigo-400 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .theme-light :where(.bg-surface-900\/90, .bg-surface-900\/80, .bg-surface-900, .bg-surface-800\/60, .bg-surface-800\/50, .bg-surface-800\/30, .bg-surface-800, .bg-surface-700) {
+    background-color: var(--app-card) !important;
+  }
+
+  .theme-light :where(.hover\:bg-surface-800:hover, .hover\:bg-surface-800\/50:hover, .hover\:bg-surface-800\/30:hover, .hover\:bg-surface-700:hover) {
+    background-color: var(--app-card-hover) !important;
+  }
+
+  .theme-light :where(.border-surface-700\/50, .border-surface-700\/30, .border-surface-700, .border-surface-600\/50, .border-surface-600) {
+    border-color: var(--app-border) !important;
+  }
+
+  .theme-light :where(.text-white, .text-slate-100) {
+    color: var(--app-text) !important;
+  }
+
+  .theme-light :where(.text-slate-200, .text-slate-300) {
+    color: var(--app-muted-strong) !important;
+  }
+
+  .theme-light :where(.text-slate-400, .text-slate-500) {
+    color: var(--app-muted) !important;
+  }
+
+  .theme-light :where(.shadow-black\/50, .shadow-black\/40, .shadow-black\/20) {
+    --tw-shadow-color: var(--app-shadow) !important;
+  }
+
+  .theme-light :where(.placeholder-slate-500)::placeholder {
+    color: var(--app-muted-soft) !important;
   }
 }
