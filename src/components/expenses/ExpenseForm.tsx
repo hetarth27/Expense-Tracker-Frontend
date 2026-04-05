@@ -17,9 +17,9 @@ const TYPE_OPTIONS = [
   { value: 'household', label: 'Household' },
 ];
 const PAYMENT_OPTIONS = [
-  { value: 'cash', label: '💵 Cash' },
-  { value: 'UPI', label: '📱 UPI' },
-  { value: 'card', label: '💳 Card' },
+  { value: 'cash', label: 'Cash' },
+  { value: 'UPI', label: 'UPI' },
+  { value: 'card', label: 'Card' },
 ];
 
 const defaultForm = (): ExpenseFormData => ({
@@ -82,9 +82,8 @@ const ExpenseForm = ({ initialData, onSubmit, onCancel }: ExpenseFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       {submitError && <ErrorAlert message={submitError} />}
 
-      {/* Amount */}
       <Input
-        label="Amount (₹)"
+        label="Amount (Rs)"
         type="number"
         step="0.01"
         min="0.01"
@@ -92,11 +91,10 @@ const ExpenseForm = ({ initialData, onSubmit, onCancel }: ExpenseFormProps) => {
         value={form.amount}
         onChange={(e) => set('amount', e.target.value === '' ? '' : parseFloat(e.target.value))}
         error={errors.amount}
-        leftAddon={<span className="text-sm font-medium">₹</span>}
+        leftAddon={<span className="text-sm font-medium">Rs</span>}
       />
 
-      {/* Category + Type */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Select
           label="Category"
           value={form.category}
@@ -112,8 +110,7 @@ const ExpenseForm = ({ initialData, onSubmit, onCancel }: ExpenseFormProps) => {
         />
       </div>
 
-      {/* Date + Payment */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Input
           label="Date"
           type="date"
@@ -130,7 +127,6 @@ const ExpenseForm = ({ initialData, onSubmit, onCancel }: ExpenseFormProps) => {
         />
       </div>
 
-      {/* Note */}
       <Textarea
         label="Note (optional)"
         placeholder="What was this for?"
@@ -139,8 +135,7 @@ const ExpenseForm = ({ initialData, onSubmit, onCancel }: ExpenseFormProps) => {
         rows={2}
       />
 
-      {/* Actions */}
-      <div className="flex gap-3 pt-2">
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row">
         <Button type="button" variant="secondary" onClick={onCancel} className="flex-1">
           Cancel
         </Button>
