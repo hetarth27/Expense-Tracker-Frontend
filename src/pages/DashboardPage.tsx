@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getDashboard } from '../api/axios';
 import CategoryBreakdown from '../components/dashboard/CategoryBreakdown';
 import FilterBar from '../components/dashboard/FilterBar';
 import MonthlyTrend from '../components/dashboard/MonthlyTrend';
 import RecentExpenses from '../components/dashboard/RecentExpenses';
 import { ErrorAlert, PageLoader, StatCard } from '../components/ui';
-import { useDashboard } from '../hooks/useDashboard';
-import { CATEGORY_META, ExpenseFilters } from '../types';
+import { CATEGORY_META, DashboardData, ExpenseFilters } from '../types';
 import { formatCurrency, formatMonthYear, formatPercentage, getCurrentMonthYear } from '../utils/helpers';
 
 const DashboardPage = () => {
@@ -16,12 +16,44 @@ const DashboardPage = () => {
     year: now.year,
     type: '',
   });
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data, isLoading, error } = useDashboard({
-    month: filters.month,
-    year: filters.year,
-    type: filters.type || undefined,
-  });
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchDashboard = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const res = await getDashboard({
+          month: filters.month,
+          year: filters.year,
+          type: filters.type || undefined,
+        });
+
+        if (!ignore) {
+          setData(res.data.data ?? null);
+        }
+      } catch (err) {
+        if (!ignore) {
+          setError(err instanceof Error ? err.message : 'Failed to load dashboard');
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchDashboard();
+
+    return () => {
+      ignore = true;
+    };
+  }, [filters.month, filters.year, filters.type]);
 
   const pctChange = data?.percentageChange ?? 0;
   const pctColor =

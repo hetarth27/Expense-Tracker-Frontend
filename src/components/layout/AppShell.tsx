@@ -1,8 +1,51 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { useFont } from '../../context/FontContext';
-import { useTheme } from '../../context/ThemeContext';
+import { clearAuthSession, getStoredUser } from '../../utils/authSession';
+
+type Theme = 'light' | 'dark';
+type FontPresetId =
+  | 'modern'
+  | 'editorial'
+  | 'geometric'
+  | 'google-sans'
+  | 'open-sans'
+  | 'inter'
+  | 'work-sans';
+
+interface FontPreset {
+  id: FontPresetId;
+  label: string;
+  sans: string;
+  display: string;
+  mono: string;
+}
+
+const THEME_KEY = 'theme';
+const FONT_KEY = 'font-preset';
+
+const FONT_PRESETS: FontPreset[] = [
+  { id: 'modern', label: 'Modern', sans: '"DM Sans"', display: '"Syne"', mono: '"JetBrains Mono"' },
+  { id: 'editorial', label: 'Editorial', sans: '"Plus Jakarta Sans"', display: '"Fraunces"', mono: '"IBM Plex Mono"' },
+  { id: 'geometric', label: 'Geometric', sans: '"Manrope"', display: '"Space Grotesk"', mono: '"Fira Code"' },
+  { id: 'google-sans', label: 'Google Sans', sans: '"Google Sans", "Product Sans", "Inter"', display: '"Space Grotesk"', mono: '"JetBrains Mono"' },
+  { id: 'open-sans', label: 'Open Sans', sans: '"Open Sans"', display: '"Fraunces"', mono: '"IBM Plex Mono"' },
+  { id: 'inter', label: 'Inter', sans: '"Inter"', display: '"Syne"', mono: '"JetBrains Mono"' },
+  { id: 'work-sans', label: 'Work Sans', sans: '"Work Sans"', display: '"Space Grotesk"', mono: '"Fira Code"' },
+];
+
+const isFontPresetId = (value: string | null): value is FontPresetId =>
+  FONT_PRESETS.some((preset) => preset.id === value);
+
+const getInitialTheme = (): Theme => {
+  const storedTheme = localStorage.getItem(THEME_KEY);
+  if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+const getInitialFont = (): FontPresetId => {
+  const storedFont = localStorage.getItem(FONT_KEY);
+  return isFontPresetId(storedFont) ? storedFont : 'modern';
+};
 
 const NAV_ITEMS = [
   {
@@ -36,9 +79,40 @@ const NAV_ITEMS = [
 
 const AppearanceMenu = () => {
   const [open, setOpen] = useState(false);
-  const { activeFont, fonts, setActiveFont } = useFont();
-  const { theme, toggleTheme } = useTheme();
+  const [activeFont, setActiveFont] = useState<FontPresetId>(getInitialFont);
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    root.classList.remove('theme-light', 'theme-dark');
+    root.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark');
+    root.style.colorScheme = theme;
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const preset = FONT_PRESETS.find((font) => font.id === activeFont) ?? FONT_PRESETS[0];
+
+    root.dataset.font = preset.id;
+    root.style.setProperty('--font-sans', `${preset.sans}, sans-serif`);
+    root.style.setProperty('--font-display', `${preset.display}, sans-serif`);
+    root.style.setProperty('--font-mono', `${preset.mono}, monospace`);
+    localStorage.setItem(FONT_KEY, preset.id);
+  }, [activeFont]);
+
+  useEffect(() => {
+    if (localStorage.getItem(THEME_KEY)) return undefined;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => setTheme(mediaQuery.matches ? 'dark' : 'light');
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -106,7 +180,7 @@ const AppearanceMenu = () => {
               </div>
               <button
                 type="button"
-                onClick={toggleTheme}
+                onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
                 className="inline-flex items-center gap-2 rounded-xl border border-surface-700/50 bg-surface-900/80 px-3 py-2 text-sm text-slate-300 transition-all duration-150 hover:bg-surface-800 hover:text-white"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
@@ -139,14 +213,14 @@ const AppearanceMenu = () => {
                 className="input pr-10 text-sm"
                 aria-label="Select font preset"
               >
-                {fonts.map((font) => (
+                {FONT_PRESETS.map((font) => (
                   <option key={font.id} value={font.id}>
                     {font.label}
                   </option>
                 ))}
               </select>
 
-              {fonts.map((font) => {
+              {FONT_PRESETS.map((font) => {
                 if (activeFont !== font.id) return null;
 
                 return (
@@ -178,11 +252,11 @@ const AppearanceMenu = () => {
 };
 
 export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
-  const { user, logout } = useAuth();
+  const user = getStoredUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    clearAuthSession();
     navigate('/login');
   };
 
@@ -218,11 +292,11 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
       <div className="mt-auto pt-4 border-t border-surface-700/50">
         <div className="flex items-center gap-3 px-3 py-2 mb-1">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
-            {user?.name.charAt(0).toUpperCase()}
+            {user?.name.charAt(0).toUpperCase() ?? 'U'}
           </div>
           <div className="overflow-hidden">
-            <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-            <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+            <p className="text-sm font-medium text-white truncate">{user?.name ?? 'User'}</p>
+            <p className="text-xs text-slate-500 truncate">{user?.email ?? ''}</p>
           </div>
         </div>
         <button
