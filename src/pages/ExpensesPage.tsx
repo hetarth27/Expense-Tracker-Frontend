@@ -1,20 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createExpense, deleteExpense, getExpenses, updateExpense } from '../api/axios';
 import FilterBar from '../components/dashboard/FilterBar';
 import ExpenseForm from '../components/expenses/ExpenseForm';
 import ExpenseTable from '../components/expenses/ExpenseTable';
 import { ErrorAlert, Modal, PageLoader } from '../components/ui';
 import Button from '../components/ui/Button';
 import { Select } from '../components/ui/Input';
-import { useToast } from '../context/ToastContext';
-import { useExpenses } from '../hooks/useExpenses';
-import { EXPENSE_CATEGORIES, Expense, ExpenseFilters } from '../types';
+import {
+  EXPENSE_CATEGORIES,
+  Expense,
+  ExpenseFilters,
+  ExpenseFormData,
+} from '../types';
 import { formatMonthYear, getCurrentMonthYear } from '../utils/helpers';
 
 const LIMIT = 15;
 
 const ExpensesPage = () => {
   const now = getCurrentMonthYear();
-  const toast = useToast();
 
   const [filters, setFilters] = useState<ExpenseFilters>({
     month: now.month,
@@ -25,43 +28,66 @@ const ExpensesPage = () => {
   const [page, setPage] = useState(1);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editExpense, setEditExpense] = useState<Expense | null>(null);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const {
-    expenses,
-    total,
-    totalPages,
-    isLoading,
-    error,
-    createExpense,
-    updateExpense,
-    deleteExpense,
-  } = useExpenses({
-    filters: { ...filters, ...(categoryFilter ? { category: categoryFilter } : {}) },
-    page,
-    limit: LIMIT,
-  });
+  const fetchExpenses = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await getExpenses({
+        month: filters.month,
+        year: filters.year,
+        type: filters.type || undefined,
+        category: categoryFilter || undefined,
+        page,
+        limit: LIMIT,
+      });
+      const result = res.data.data;
+
+      setExpenses(result?.expenses ?? []);
+      setTotal(result?.total ?? 0);
+      setTotalPages(result?.totalPages ?? 0);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch expenses');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchExpenses();
+  }, [filters.month, filters.year, filters.type, categoryFilter, page]);
 
   const handleFilterChange = (f: ExpenseFilters) => {
     setFilters(f);
     setPage(1);
   };
 
-  const handleAdd = async (data: Parameters<typeof createExpense>[0]) => {
+  const handleAdd = async (data: ExpenseFormData) => {
     await createExpense(data);
+    await fetchExpenses();
     setShowAddModal(false);
-    toast.success('Expense added successfully');
+    setSuccess('Expense added successfully');
   };
 
-  const handleEdit = async (data: Parameters<typeof updateExpense>[1]) => {
+  const handleEdit = async (data: Partial<ExpenseFormData>) => {
     if (!editExpense) return;
     await updateExpense(editExpense._id, data);
+    await fetchExpenses();
     setEditExpense(null);
-    toast.success('Expense updated');
+    setSuccess('Expense updated');
   };
 
   const handleDelete = async (id: string) => {
     await deleteExpense(id);
-    toast.success('Expense deleted');
+    await fetchExpenses();
+    setSuccess('Expense deleted');
   };
 
   const categoryOptions = [
@@ -85,6 +111,11 @@ const ExpensesPage = () => {
       </div>
 
       {error && <ErrorAlert message={error} />}
+      {success && (
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-400">
+          {success}
+        </div>
+      )}
 
       <div className="card p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-center lg:gap-2">

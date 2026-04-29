@@ -1,22 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { deleteBudget, getBudgets, upsertBudget } from '../api/axios';
 import { BudgetCard, BudgetForm } from '../components/budget/BudgetCard';
 import { EmptyState, ErrorAlert, Modal, PageLoader } from '../components/ui';
 import Button from '../components/ui/Button';
 import { Select } from '../components/ui/Input';
-import { useToast } from '../context/ToastContext';
-import { useBudgets } from '../hooks/useBudgets';
-import { BudgetFormData } from '../types';
+import { Budget, BudgetFormData } from '../types';
 import { MONTH_OPTIONS, formatMonthYear, getCurrentMonthYear, getYearOptions } from '../utils/helpers';
 
 const BudgetsPage = () => {
   const now = getCurrentMonthYear();
-  const toast = useToast();
 
   const [month, setMonth] = useState(now.month);
   const [year, setYear] = useState(now.year);
   const [showForm, setShowForm] = useState(false);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const { budgets, isLoading, error, upsertBudget, deleteBudget } = useBudgets({ month, year });
+  const fetchBudgets = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await getBudgets({ month, year });
+      setBudgets(res.data.data?.budgets ?? []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch budgets');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBudgets();
+  }, [month, year]);
 
   const yearOptions = getYearOptions().map((y) => ({ value: y, label: String(y) }));
 
@@ -26,13 +44,15 @@ const BudgetsPage = () => {
 
   const handleSubmit = async (data: BudgetFormData) => {
     await upsertBudget(data);
+    await fetchBudgets();
     setShowForm(false);
-    toast.success('Budget saved');
+    setSuccess('Budget saved');
   };
 
   const handleDelete = async (id: string) => {
     await deleteBudget(id);
-    toast.success('Budget removed');
+    await fetchBudgets();
+    setSuccess('Budget removed');
   };
 
   return (
@@ -63,6 +83,11 @@ const BudgetsPage = () => {
       </div>
 
       {error && <ErrorAlert message={error} />}
+      {success && (
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-400">
+          {success}
+        </div>
+      )}
 
       {/* Summary */}
       {budgets.length > 0 && (

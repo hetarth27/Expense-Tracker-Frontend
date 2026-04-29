@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../api/axios';
 import { ErrorAlert } from '../components/ui';
 import Button from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { useAuth } from '../context/AuthContext';
+import { saveAuthSession } from '../utils/authSession';
 
 const RegisterPage = () => {
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
@@ -26,7 +26,22 @@ const RegisterPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await register(form.name, form.email, form.password);
+      const res = await register({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+      const authData = res.data.data;
+
+      if (!authData) {
+        throw new Error('Registration failed');
+      }
+
+      saveAuthSession({
+        token: authData.token,
+        user: authData.user,
+        remember: false,
+      });
       navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
