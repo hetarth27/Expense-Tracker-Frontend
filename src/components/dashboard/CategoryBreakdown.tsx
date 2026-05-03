@@ -24,7 +24,7 @@ const CustomTooltip = ({
   if (!active || !payload?.length) return null;
   const item = payload[0];
   return (
-    <div className="bg-surface-800 border border-surface-600 rounded-xl p-3 shadow-xl">
+    <div className="bg-surface-800 border border-surface-600 rounded-xl p-3 shadow-app">
       <p className="text-sm font-medium text-white mb-1">{item.name}</p>
       <p className="text-brand-400 font-mono text-sm">{formatCurrency(item.value)}</p>
     </div>

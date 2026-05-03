@@ -55,7 +55,7 @@ const RegisterPage = () => {
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-xl shadow-brand-500/30">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-app">
             S
           </div>
           <span className="font-display text-3xl font-bold text-white">Spendly</span>

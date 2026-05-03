@@ -34,7 +34,7 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         onClick={onClose}
       />
       <div
-        className={`relative max-h-[calc(100vh-1.5rem)] w-full overflow-y-auto ${modalSizes[size]} card border border-surface-600 shadow-2xl shadow-black/50 animate-scale-in sm:max-h-[calc(100vh-2rem)]`}
+        className={`relative max-h-[calc(100vh-1.5rem)] w-full overflow-y-auto ${modalSizes[size]} card border border-surface-600 shadow-app animate-scale-in sm:max-h-[calc(100vh-2rem)]`}
       >
         {title && (
           <div className="flex items-center justify-between border-b border-surface-700/50 p-4 sm:p-6">

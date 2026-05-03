@@ -45,7 +45,7 @@ const LoginPage = () => {
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-xl shadow-brand-500/30">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-app">
             S
           </div>
           <span className="font-display text-3xl font-bold text-white">Spendly</span>
@@ -82,7 +82,7 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword((current) => !current)}
-                  className="rounded-md p-1 text-slate-400 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/50"
+                  className="rounded-md p-1 text-slate-400 transition-colors hover:text-white focus:outline-none"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? (
@@ -138,7 +138,7 @@ const LoginPage = () => {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="peer sr-only"
               />
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-surface-600 text-transparent transition-all duration-200 peer-checked:scale-105 peer-checked:border-brand-400 peer-checked:bg-brand-500 peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-400/50">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-surface-600 text-transparent transition-all duration-200 peer-checked:scale-105 peer-checked:border-brand-400 peer-checked:bg-brand-500 peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-400">
                 <svg
                   className="h-3.5 w-3.5 transition-transform duration-200"
                   viewBox="0 0 20 20"

@@ -6,6 +6,7 @@ import DashboardPage from './pages/DashboardPage';
 import ExpensesPage from './pages/ExpensesPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
+import PublicExpensesPage from './pages/PublicExpensesPage';
 import RegisterPage from './pages/RegisterPage';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/public/expenses/:token" element={<PublicExpensesPage />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>

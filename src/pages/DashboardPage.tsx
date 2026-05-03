@@ -4,6 +4,7 @@ import { getDashboard } from '../api/axios';
 import CategoryBreakdown from '../components/dashboard/CategoryBreakdown';
 import FilterBar from '../components/dashboard/FilterBar';
 import MonthlyTrend from '../components/dashboard/MonthlyTrend';
+import MonthWiseSummary from '../components/dashboard/MonthWiseSummary';
 import RecentExpenses from '../components/dashboard/RecentExpenses';
 import { ErrorAlert, PageLoader, StatCard } from '../components/ui';
 import { CATEGORY_META, DashboardData, ExpenseFilters } from '../types';
@@ -164,6 +165,11 @@ const DashboardPage = () => {
                 data={data?.categoryBreakdown ?? []}
                 total={data?.currentMonthTotal ?? 0}
               />
+            </div>
+
+            {/* Month-wise summary */}
+            <div className="card p-6 space-y-4">
+              <MonthWiseSummary year={filters.year} type={filters.type} />
             </div>
           </div>
 

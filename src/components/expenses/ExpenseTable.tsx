@@ -6,8 +6,8 @@ import Button from '../ui/Button';
 
 interface ExpenseTableProps {
   expenses: Expense[];
-  onEdit: (expense: Expense) => void;
-  onDelete: (id: string) => Promise<void>;
+  onEdit?: (expense: Expense) => void;
+  onDelete?: (id: string) => Promise<void>;
   isLoading?: boolean;
 }
 
@@ -16,7 +16,7 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteConfirm = async () => {
-    if (!deleteTarget) return;
+    if (!deleteTarget || !onDelete) return;
     setIsDeleting(true);
     try {
       await onDelete(deleteTarget);
@@ -40,7 +40,7 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
     <>
       <div className="space-y-3 md:hidden">
         {expenses.map((expense) => {
-          const meta = CATEGORY_META[expense.category];
+          const meta = CATEGORY_META[expense.category] || { bg: 'bg-surface-700', icon: '💰' };
 
           return (
             <div
@@ -63,36 +63,40 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onEdit(expense)}
-                    className="p-1.5"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setDeleteTarget(expense._id)}
-                    className="p-1.5 hover:text-rose-400"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </Button>
+                  {onEdit && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEdit(expense)}
+                      className="p-1.5"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                    </Button>
+                  )}
+                  {onDelete && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDeleteTarget(expense._id)}
+                      className="p-1.5 hover:text-rose-400"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -154,16 +158,16 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
           </thead>
           <tbody className="divide-y divide-surface-700/30">
             {expenses.map((expense) => {
-              const meta = CATEGORY_META[expense.category];
+              const meta = CATEGORY_META[expense.category] || { bg: 'bg-surface-700', icon: '💰' };
 
               return (
                 <tr key={expense._id} className="group transition-colors hover:bg-surface-800/30">
                   <td className="py-3 px-3 pl-0">
                     <div className="flex items-center gap-2.5">
                       <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm ${meta?.bg || 'bg-surface-700'}`}
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm ${meta.bg}`}
                       >
-                        {meta?.icon || '💰'}
+                        {meta.icon}
                       </span>
                       <span className="text-sm font-medium text-slate-200">
                         {expense.category}
@@ -199,36 +203,40 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
 
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onEdit(expense)}
-                        className="p-1.5"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeleteTarget(expense._id)}
-                        className="p-1.5 hover:text-rose-400"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </Button>
+                      {onEdit && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEdit(expense)}
+                          className="p-1.5"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                        </Button>
+                      )}
+                      {onDelete && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setDeleteTarget(expense._id)}
+                          className="p-1.5 hover:text-rose-400"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -238,14 +246,16 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
         </table>
       </div>
 
-      <ConfirmDialog
-        isOpen={!!deleteTarget}
-        onClose={() => setDeleteTarget(null)}
-        onConfirm={handleDeleteConfirm}
-        title="Delete Expense"
-        message="Are you sure you want to delete this expense? This action cannot be undone."
-        isLoading={isDeleting}
-      />
+      {onDelete && (
+        <ConfirmDialog
+          isOpen={!!deleteTarget}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={handleDeleteConfirm}
+          title="Delete Expense"
+          message="Are you sure you want to delete this expense? This action cannot be undone."
+          isLoading={isDeleting}
+        />
+      )}
     </>
   );
 };

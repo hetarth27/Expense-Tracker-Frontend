@@ -26,7 +26,7 @@ const CustomTooltip = ({
 }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-surface-800 border border-surface-600 rounded-xl p-3 shadow-xl">
+    <div className="bg-surface-800 border border-surface-600 rounded-xl p-3 shadow-app">
       <p className="text-xs text-slate-400 mb-1">{label}</p>
       <p className="text-brand-400 font-mono text-sm font-medium">
         {formatCurrency(payload[0].value)}

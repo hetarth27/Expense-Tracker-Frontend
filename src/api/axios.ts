@@ -11,6 +11,7 @@ import {
   Expense,
   ExpenseFilters,
   ExpenseFormData,
+  MonthlyTotal,
   PaginatedExpenses,
   User,
 } from '../types';
@@ -92,5 +93,17 @@ export const upsertBudget = (data: BudgetFormData) =>
 
 export const deleteBudget = (id: string) =>
   api.delete<ApiResponse<null>>(`/budgets/${id}`);
+
+export const getMonthlyTotals = (params?: { year?: number; type?: string }) =>
+  api.get<ApiResponse<{ monthlyTotals: MonthlyTotal[] }>>('/expenses/analytics/monthly', { params });
+
+export const generateShareToken = () =>
+  api.post<ApiResponse<{ token: string; expiresAt: string; shareUrl: string }>>('/share/generate');
+
+export const revokeShareToken = () =>
+  api.delete<ApiResponse<null>>('/share/revoke');
+
+export const getPublicExpenses = (token: string) =>
+  api.get<ApiResponse<{ userName: string; expenses: Expense[] }>>(`/share/expenses/${token}`);
 
 export default api;
