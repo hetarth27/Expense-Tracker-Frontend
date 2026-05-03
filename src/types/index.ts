@@ -29,6 +29,7 @@ export const EXPENSE_CATEGORIES = [
   'Groceries',
   'Fruits & Vegetables',
   'Subscriptions',
+  'Vehicle Services',
   'Other',
 ] as const;
 
@@ -119,6 +120,7 @@ export interface ApiResponse<T> {
 export interface PaginatedExpenses {
   expenses: Expense[];
   total: number;
+  totalAmount: number;
   page: number;
   limit: number;
   totalPages: number;
@@ -144,6 +146,7 @@ export const CATEGORY_META: Record<string, CategoryMeta> = {
   'Groceries': { color: 'text-lime-400', bg: 'bg-lime-400/10', icon: '🛒' },
   'Subscriptions': { color: 'text-violet-400', bg: 'bg-violet-400/10', icon: '📱' },
   'Fruits & Vegetables': { color: 'text-red-400', bg: 'bg-red-400/10', icon: '🍇' },
+  'Vehicle Services': { color: 'text-amber-400', bg: 'bg-amber-400/10', icon: '🔧' },
   'Other': { color: 'text-slate-400', bg: 'bg-slate-400/10', icon: '📌' },
 };
 

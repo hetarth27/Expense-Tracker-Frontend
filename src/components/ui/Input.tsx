@@ -30,7 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               input
               ${leftAddon ? 'pl-9' : ''}
               ${rightAddon ? 'pr-9' : ''}
-              ${error ? 'border-rose-500/50 focus:ring-rose-500/30 focus:border-rose-500/50' : ''}
+              ${error ? 'border-rose-500/50 focus:border-rose-500/50' : ''}
               ${className}
             `}
             {...props}
@@ -70,7 +70,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           id={selectId}
           className={`
             input appearance-none cursor-pointer
-            ${error ? 'border-rose-500/50 focus:ring-rose-500/30' : ''}
+            ${error ? 'border-rose-500/50 focus:border-rose-500/50' : ''}
             ${className}
           `}
           {...props}
@@ -114,7 +114,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           rows={3}
           className={`
             input resize-none
-            ${error ? 'border-rose-500/50 focus:ring-rose-500/30' : ''}
+            ${error ? 'border-rose-500/50 focus:border-rose-500/50' : ''}
             ${className}
           `}
           {...props}

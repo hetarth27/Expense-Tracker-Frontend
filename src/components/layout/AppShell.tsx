@@ -156,7 +156,7 @@ const AppearanceMenu = () => {
 
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+0.75rem)] z-[9999] w-72 max-w-[calc(100vw-1.5rem)] -translate-x-2 rounded-2xl border border-surface-700/50 p-3 shadow-2xl shadow-black/20"
+          className="absolute right-0 top-[calc(100%+0.75rem)] z-[9999] w-72 max-w-[calc(100vw-1.5rem)] -translate-x-2 rounded-2xl border border-surface-700/50 p-3 shadow-app"
           style={{
             backgroundColor: theme === 'dark' ? '#0f172a' : '#ffffff',
           }}
@@ -263,7 +263,7 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   return (
     <aside className="flex flex-col h-full w-64 bg-surface-900/90 backdrop-blur-sm border-r border-surface-700/50 p-4">
       <div className="flex items-center gap-3 px-2 py-3 mb-6">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-brand-500/30">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-indigo-500 flex items-center justify-center text-white font-display font-bold text-lg shadow-app">
           S
         </div>
         <span className="font-display text-xl font-bold text-white">Spendly</span>
