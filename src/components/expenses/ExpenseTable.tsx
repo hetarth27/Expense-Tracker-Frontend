@@ -196,7 +196,7 @@ const ExpenseTable = ({ expenses, onEdit, onDelete, isLoading }: ExpenseTablePro
                   </td>
 
                   <td className="max-w-[150px] py-3 px-3">
-                    <span className="block truncate text-sm text-slate-500">
+                    <span className="block text-sm text-slate-500">
                       {expense.note || '-'}
                     </span>
                   </td>
