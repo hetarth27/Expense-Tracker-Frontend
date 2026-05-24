@@ -103,7 +103,19 @@ export const generateShareToken = () =>
 export const revokeShareToken = () =>
   api.delete<ApiResponse<null>>('/share/revoke');
 
-export const getPublicExpenses = (token: string) =>
-  api.get<ApiResponse<{ userName: string; expenses: Expense[] }>>(`/share/expenses/${token}`);
+export const getPublicExpenses = (
+  token: string,
+  params?: {
+    category?: string;
+    type?: string;
+    month?: number;
+    year?: number;
+    date?: string;
+  }
+) =>
+  api.get<ApiResponse<{ userName: string; expenses: Expense[]; total?: number; totalAmount?: number }>>(
+    `/share/expenses/${token}`,
+    { params }
+  );
 
 export default api;
