@@ -56,11 +56,11 @@ const MonthWiseSummary = ({ year, type }: MonthWiseSummaryProps) => {
             {data.length === 0 ? (
                 <p className="text-sm text-slate-500 text-center py-8">No expense data available</p>
             ) : (
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {data.map((month) => (
                         <div
                             key={`${month.year}-${month.month}`}
-                            className="flex items-center justify-between p-3 rounded-lg border border-surface-700/50 bg-surface-800/20"
+                            className="flex items-center justify-between gap-3 p-3 rounded-lg border border-surface-700/50 bg-surface-800/20"
                         >
                             <div>
                                 <p className="text-sm font-medium text-slate-200">

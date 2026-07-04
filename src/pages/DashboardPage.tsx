@@ -168,7 +168,7 @@ const DashboardPage = () => {
             </div>
 
             {/* Month-wise summary */}
-            <div className="card p-6 space-y-4">
+            <div className="xl:col-span-3 card p-6 space-y-4">
               <MonthWiseSummary year={filters.year} type={filters.type} />
             </div>
           </div>
