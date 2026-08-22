@@ -17,8 +17,8 @@ import {
 } from '../types';
 import { clearAuthSession, getAuthToken } from '../utils/authSession';
 
-// const BASE_URL = 'https://expense-tracker-backend-yj1t.onrender.com/api';
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'https://expense-tracker-backend-yj1t.onrender.com/api';
+// const BASE_URL = 'http://localhost:5000/api';
 
 const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
